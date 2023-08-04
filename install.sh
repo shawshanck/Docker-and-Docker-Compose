@@ -13,13 +13,13 @@ installApps()
 {
     clear
     OS="$REPLY" ## <-- This $REPLY is about OS Selection
-    echo -e "${YELLOW}You can Install ${GREEN}Docker${NC} and ${GREEN}Docker-Compose${NC} with this script!${NC}"
+    echo -e "${NC}You can Install ${GREEN}Docker ${NC}and ${GREEN}Docker-Compose${NC} ${NC}with this script!${NC}"
     echo -e "Please select ${GREEN}'y'${NC} for each item you would like to install."
-    echo -e "${RED}NOTE: Without Docker you cannot use Docker-Compose.${NC}"
+    echo -e "${RED}NOTE:${NC} Without Docker you cannot use Docker-Compose.${NC}"
     echo -e ""
     echo -e ""
-    echo -e "      ${CYAN}Provided to you by Mohammad Mohammadpour${NC}"
-    echo -e "          ${CYAN}https://github.com/shawshanck${NC}"
+    echo -e "      ${CYAN}Provided to you by ${YELLOW}Mohammad Mohammadpour${NC}"
+    echo -e "          ${YELLOW}https://github.com/shawshanck${NC}"
     echo -e ""
     
     ISACT=$( (sudo systemctl is-active docker ) 2>&1 )
@@ -365,12 +365,12 @@ echo -e "${YELLOW}Let's figure out which OS / Distro you are running.${NC}"
 echo -e ""
 echo -e ""
 echo -e "${GREEN}    From some basic information on your system, you appear to be running: ${NC}"
-echo -e "        --  OS Name            " $(lsb_release -i)
-echo -e "        --  Description        " $(lsb_release -d)
-echo -e "        --  OS Version         " $(lsb_release -r)
-echo -e "        --  Code Name          " $(lsb_release -c)
+echo -e "${GREEN}        --  OS Name            ${NC}" $(lsb_release -i)
+echo -e "${GREEN}        --  Description        ${NC}" $(lsb_release -d)
+echo -e "${GREEN}        --  OS Version         ${NC}" $(lsb_release -r)
+echo -e "${GREEN}        --  Code Name          ${NC}" $(lsb_release -c)
 echo -e ""
-echo -e "------------------------------------------------"
+echo -e "${YELLOW}------------------------------------------------${NC}"
 echo -e ""
 
 PS3="Please select the number for your OS / distro: "
