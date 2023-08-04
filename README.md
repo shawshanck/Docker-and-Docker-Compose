@@ -2,6 +2,8 @@
 
 With this script, you can automatically install Docker (Community Edition) and Docker-Compose on your OS.
 
+Note: It automatically creates a network named "my-main-app" properties. For further containers installation, make sure to add the to this network.
+
 <h2>Supported OS:</h2>
 
 "CentOS 7 / 8 / Fedora"
