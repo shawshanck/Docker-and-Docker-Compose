@@ -1,4 +1,4 @@
-<h1>"Docker-and-Docker-Compose"</h1>
+<h1>"Docker and Docker-Compose"</h1>
 
 With this script, you can automatically install Docker (Community Edition) and Docker-Compose on your OS.
 
