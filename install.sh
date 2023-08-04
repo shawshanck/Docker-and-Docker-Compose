@@ -59,7 +59,7 @@ startInstall()
 #######################################################
 
     if [[ "$OS" == [234] ]]; then
-        echo -e "${BLUE}    1. Installing System Updates... this may take a while...be patient. If it is being done on a Digial Ocean VPS, you should run updates before running this script.${NC}"
+        echo -e "${BLUE}    1. Installing System Updates... This may take a while... ${GREEN}Please be patient! ${BLUE}If it is being done on a Digial Ocean VPS, you should run updates before running this script.${NC}"
         (sudo apt update && sudo apt upgrade -y) > ~/docker-script-install.log 2>&1 &
         ## Show a spinner for activity progress
         pid=$! # Process Id of the previous running command
@@ -84,7 +84,7 @@ startInstall()
 
         
             curl -fsSL https://get.docker.com | sh >> ~/docker-script-install.log 2>&1
-            echo -e "${GREEN}      - docker-ce version is now:${NC}"
+            echo -e "${YELLOW}      - docker-ce version is now:${NC}"
             DOCKERV=$(docker -v)
             echo -e "${YELLOW}          ${NC}"${DOCKERV}
             sleep 3s
@@ -257,7 +257,7 @@ startInstall()
 
         # install docker-compose
         echo ""
-        echo "    1. Installing Docker-Compose..."
+        echo -e "${GREEN}    1. Installing Docker-Compose...${NC}"
         echo ""
         echo ""
         sleep 2s
@@ -306,7 +306,7 @@ startInstall()
 
         echo ""
 
-        echo "      - Docker Compose Version is now: " 
+        echo -e "${GREEN}      - Docker Compose Version is now: ${NC}" 
         DOCKCOMPV=$(docker-compose --version)
         echo "        "${DOCKCOMPV}
         echo ""
@@ -319,7 +319,7 @@ startInstall()
     ##########################################
     ISACT=$( (sudo systemctl is-active docker ) 2>&1 )
     if [[ "$ISACt" != "active" ]]; then
-        echo "Giving the Docker service time to start..."
+        echo -e "${YELLOW}Giving the Docker service time to start...${NC}"
         while [[ "$ISACT" != "active" ]] && [[ $X -le 10 ]]; do
             sudo systemctl start docker >> ~/docker-script-install.log 2>&1
             sleep 10s &
@@ -346,13 +346,14 @@ startInstall()
     sudo docker network create my-main-net
     sleep 2s
 
-    echo "Docker and Docker-Compose installed successfully."
+    echo -e "${GREEN}Docker and Docker-Compose installed successfully.${NC}"
     echo ""
-    echo "If you add more docker applications to this server, make sure to add them to the my-main-app network."
+    echo -e "${RED}Note:${NC} If you add more docker applications to this server, make sure to add them to the ${GREEN}my-main-app${NC} network."
     echo ""
-    echo "Provided to you by Mohammad Mohammadpour"
-    echo "https://github.com/shawshanck"
+    echo -e "      ${CYAN}Provided to you by ${YELLOW}Mohammad Mohammadpour${NC}"
+    echo -e "          ${YELLOW}https://github.com/shawshanck${NC}"
 
+    cd
     exit 1
 }
 
