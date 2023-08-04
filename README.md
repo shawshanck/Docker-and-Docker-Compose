@@ -9,6 +9,8 @@
 
 >**Note**: It automatically creates a network named "my-main-app" properties. For further containers installation, make sure to add them to this network.
 
+<hr>
+
 <h2>Supported OS:</h2>
 
 * "CentOS 7 / 8 / Fedora"
