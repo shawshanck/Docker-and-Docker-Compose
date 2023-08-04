@@ -4,11 +4,13 @@ installApps()
 {
     clear
     OS="$REPLY" ## <-- This $REPLY is about OS Selection
-    echo "We can install Docker-CE, Docker-Compose, NGinX Proxy Manager, and Portainer-CE."
+    echo "You can Install Docker and Docker-Compose with this script!"
     echo "Please select 'y' for each item you would like to install."
-    echo "NOTE: Without Docker you cannot use Docker-Compose, NGinx Proxy Manager, or Portainer-CE."
-    echo "       You also must have Docker-Compose for NGinX Proxy Manager to be installed."
+    echo "NOTE: Without Docker you cannot use Docker-Compose."
     echo ""
+    echo ""
+    echo "Provided to you by Mohammad Mohammadpour"
+    echo "https://github.com/shawshanck"
     echo ""
     
     ISACT=$( (sudo systemctl is-active docker ) 2>&1 )
@@ -29,29 +31,6 @@ installApps()
         echo "Docker-compose appears to be installed."
         echo ""
         echo ""
-    fi
-
-    read -rp "NGinX Proxy Manager (y/n): " NPM
-    read -rp "Navidrome (y/n): " NAVID
-    read -rp "Portainer-CE (y/n): " PTAIN
-
-    if [[ "$PTAIN" == [yY] ]]; then
-        echo ""
-        echo ""
-        PS3="Please choose either Portainer-CE or just Portainer Agent: "
-        select _ in \
-            " Full Portainer-CE (Web GUI for Docker, Swarm, and Kubernetes)" \
-            " Portainer Agent - Remote Agent to Connect from Portainer-CE" \
-            " Nevermind -- I don't need Portainer after all."
-        do
-            PORT="$REPLY"
-            case $REPLY in
-                1) startInstall ;;
-                2) startInstall ;;
-                3) startInstall ;;
-                *) echo "Invalid selection, please try again..." ;;
-            esac
-        done
     fi
     
     startInstall
@@ -358,141 +337,12 @@ startInstall()
     sudo docker network create my-main-net
     sleep 2s
 
-    if [[ "$NPM" == [yY] ]]; then
-        echo "##########################################"
-        echo "###     Install NGinX Proxy Manager    ###"
-        echo "##########################################"
-    
-        # pull an nginx proxy manager docker-compose file from github
-        echo "    1. Pulling a default NGinX Proxy Manager docker-compose.yml file."
-
-        mkdir -p docker/nginx-proxy-manager
-        cd docker/nginx-proxy-manager
-
-        curl https://gitlab.com/bmcgonag/docker_installs/-/raw/main/docker_compose.nginx_proxy_manager.yml -o docker-compose.yml >> ~/docker-script-install.log 2>&1
-
-        echo "    2. Running the docker-compose.yml to install and start NGinX Proxy Manager"
-        echo ""
-        echo ""
-
-        if [[ "$OS" == "1" ]]; then
-          docker-compose up -d
-        else
-          sudo docker-compose up -d
-        fi
-
-        echo "    3. You can find NGinX Proxy Manager files at ./docker/nginx-proxy-manager"
-        echo ""
-        echo "    Navigate to your server hostname / IP address on port 81 to setup"
-        echo "    NGinX Proxy Manager admin account."
-        echo ""
-        echo "    The default login credentials for NGinX Proxy Manager are:"
-        echo "        username: admin@example.com"
-        echo "        password: changeme"
-
-        echo ""       
-        sleep 3s
-        cd
-    fi
-
-    if [[ "$PORT" == "1" ]]; then
-        echo "########################################"
-        echo "###      Installing Portainer-CE     ###"
-        echo "########################################"
-        echo ""
-        echo "    1. Preparing to Install Portainer-CE"
-        echo ""
-        echo "    2. Creating the folder structure for Portainer."
-        echo "    3. You can find Portainer-CE files in ./docker/portainer"
-
-        #sudo docker volume create portainer_data >> ~/docker-script-install.log 2>&1
-        mkdir -p docker/portainer/portainer_data
-        cd docker/portainer
-        curl https://gitlab.com/bmcgonag/docker_installs/-/raw/main/docker_compose_portainer_ce.yml -o docker-compose.yml >> ~/docker-script-install.log 2>&1
-        echo ""
-
-        if [[ "$OS" == "1" ]]; then
-          docker-compose up -d
-        else
-          sudo docker-compose up -d
-        fi
-
-        echo ""
-        echo "    Navigate to your server hostname / IP address on port 9000 and create your admin account for Portainer-CE"
-
-        echo ""
-        echo ""
-        echo ""
-        sleep 3s
-        cd
-    fi
-
-    if [[ "$PORT" == "2" ]]; then
-        echo "###########################################"
-        echo "###      Installing Portainer Agent     ###"
-        echo "###########################################"
-        echo ""
-        echo "    1. Preparing to install Portainer Agent"
-        echo "    2. Creating the folder structure for Portainer."
-        echo "    3. You can find Portainer-Agent files in ./docker/portainer"
-
-        sudo docker volume create portainer_data
-        mkdir -p docker/portainer
-        cd docker/portainer
-        curl https://gitlab.com/bmcgonag/docker_installs/-/raw/main/docker_compose_portainer_ce_agent.yml -o docker-compose.yml >> ~/docker-script-install.log 2>&1
-        echo ""
-        
-        if [[ "$OS" == "1" ]]; then
-          docker-compose up -d
-        else
-          sudo docker-compose up -d
-        fi
-
-        echo ""
-        echo "    From Portainer or Portainer-CE add this Agent instance via the 'Endpoints' option in the left menu."
-        echo "       ####     Use the IP address of this server and port 9001"
-        echo ""
-        echo ""
-        echo ""
-        sleep 3s
-        cd
-    fi
-
-    if [[ "$NAVID" == [yY] ]]; then
-        echo "###########################################"
-        echo "###        Installing Navidrome         ###"
-        echo "###########################################"
-        echo ""
-        echo "    1. Preparing to install Navidrome"
-
-        mkdir -p docker/navidrome
-        cd docker/navidrome
-
-        curl https://gitlab.com/bmcgonag/docker_installs/-/raw/main/docker_compose_navidrome.yml -o docker-compose.yml >> ~/docker-script-install.log 2>&1
-
-        echo "    2. Running the docker-compose.yml to install and start Navidrome"
-        echo ""
-        echo ""
-
-        if [[ "$OS" == "1" ]]; then
-          docker-compose up -d
-        else
-          sudo docker-compose up -d
-        fi
-
-        echo "    3. You can find your Navidrome files in ./docker/navidrome"
-        echo ""
-        echo "    Navigate to your server hostname / IP address on port 4533 to setup"
-        echo "    your new Navidrome admin account."
-        echo ""      
-        sleep 3s
-        cd
-    fi
-
-    echo "All docker applications have been added to the docker network my-main-app"
+    echo "Docker and Docker-Compose installed successfully."
     echo ""
     echo "If you add more docker applications to this server, make sure to add them to the my-main-app network."
-    echo "You can then use them by container name in NGinX Proxy Manager if so desired."
+    echo ""
+    echo "Provided to you by Mohammad Mohammadpour"
+    echo "https://github.com/shawshanck"
 
     exit 1
 }
