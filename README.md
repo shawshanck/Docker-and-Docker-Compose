@@ -4,12 +4,12 @@ With this script, you can automatically install Docker (Community Edition) and D
 
 <h2>Supported OS:</h2>
 
-    "CentOS 7 / 8 / Fedora"
-    "Debian 10 / 11"
-    "Ubuntu 18.04"
-    "Ubuntu 20.04 / 21.04 / 22.04"
-    "Arch Linux"
-    "Open Suse"
+"CentOS 7 / 8 / Fedora"
+"Debian 10 / 11"
+"Ubuntu 18.04"
+"Ubuntu 20.04 / 21.04 / 22.04"
+"Arch Linux"
+"Open Suse"
 
 ```
 mkdir docker && cd docker
