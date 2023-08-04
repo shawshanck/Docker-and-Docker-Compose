@@ -4,10 +4,12 @@ installApps()
 {
     clear
     OS="$REPLY" ## <-- This $REPLY is about OS Selection
-    echo "You can Install Docker and Docker-Compose with this script!"
+    echo "You can Install NGinX Proxy Manager with this script!"
     echo "Please select 'y' for each item you would like to install."
-    echo "NOTE: Without Docker you cannot use Docker-Compose."
+    echo "NOTE: Without Docker and Docker-Compose, you cannot install this container."
     echo ""
+    echo "To install Docker and Docker-Compose, use the link below:"
+    echo "https://github.com/shawshanck/Docker-and-Docker-Compose"
     echo ""
     echo "Provided to you by Mohammad Mohammadpour"
     echo "https://github.com/shawshanck"
@@ -17,22 +19,9 @@ installApps()
     ISCOMP=$( (docker-compose -v ) 2>&1 )
 
     #### Try to check whether docker is installed and running - don't prompt if it is
-    if [[ "$ISACT" != "active" ]]; then
-        read -rp "Docker-CE (y/n): " DOCK
-    else
-        echo "Docker appears to be installed and running."
-        echo ""
-        echo ""
-    fi
-
-    if [[ "$ISCOMP" == *"command not found"* ]]; then
-        read -rp "Docker-Compose (y/n): " DCOMP
-    else
-        echo "Docker-compose appears to be installed."
-        echo ""
-        echo ""
-    fi
     
+    read -rp "NGinX Proxy Manager (y/n): " NPM
+
     startInstall
 }
 
@@ -241,109 +230,46 @@ startInstall()
         fi
     fi
 
-    if [[ "$DCOMP" = [yY] ]]; then
-        echo "############################################"
-        echo "######     Install Docker-Compose     ######"
-        echo "############################################"
+    if [[ "$NPM" == [yY] ]]; then
+        echo "##########################################"
+        echo "###     Install NGinX Proxy Manager    ###"
+        echo "##########################################"
+    
+        # pull an nginx proxy manager docker-compose file from github
+        echo "    1. Pulling a default NGinX Proxy Manager docker-compose.yml file."
 
-        # install docker-compose
-        echo ""
-        echo "    1. Installing Docker-Compose..."
-        echo ""
-        echo ""
-        sleep 2s
+        mkdir -p docker/nginx-proxy-manager
+        cd docker/nginx-proxy-manager
 
-        ######################################
-        ###     Install Debian / Ubuntu    ###
-        ######################################        
-        
-        if [[ "$OS" == "2" || "$OS" == "3" || "$OS" == "4" ]]; then
-            VERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*\d')
-		    sudo curl -SL https://github.com/docker/compose/releases/download/$VERSION/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
-            #sudo curl -L "https://github.com/docker/compose/releases/download/$(curl https://github.com/docker/compose/releases | grep -m1 '<a href="/docker/compose/releases/download/' | grep -o 'v[0-9:].[0-9].[0-9]')/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        curl https://gitlab.com/bmcgonag/docker_installs/-/raw/main/docker_compose.nginx_proxy_manager.yml -o docker-compose.yml >> ~/docker-script-install.log 2>&1
 
-            sleep 2
-            sudo chmod +x /usr/local/bin/docker-compose
-        fi
-        ######################################
-        ###        Install CentOS 7 or 8   ###
-        ######################################
+        echo "    2. Running the docker-compose.yml to install and start NGinX Proxy Manager"
+        echo ""
+        echo ""
 
         if [[ "$OS" == "1" ]]; then
-            VERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*\d')
-		    sudo curl -SL https://github.com/docker/compose/releases/download/$VERSION/docker-compose-linux-x86_64 -o /usr/bin/docker-compose >> ~/docker-script-install.log 2>&1
-
-            sudo chmod +x /usr/bin/docker-compose >> ~/docker-script-install.log 2>&1
+          docker-compose up -d
+        else
+          sudo docker-compose up -d
         fi
 
-        ######################################
-        ###        Install Arch Linux      ###
-        ######################################
-
-        if [[ "$OS" == "5" ]]; then
-            sudo pacman -Sy docker-compose --noconfirm > ~/docker-script-install.log 2>&1
-        fi
-
-        ######################################
-        ###        Install Open Suse       ###
-        ######################################
-
-        if [[ "$OS" == "6" ]]; then
-            VERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/latest | grep -Po '"tag_name": "\K.*\d')
-		    sudo curl -SL https://github.com/docker/compose/releases/download/$VERSION/docker-compose-linux-x86_64 -o /usr/bin/docker-compose >> ~/docker-script-install.log 2>&1
-
-            sudo chmod +x /usr/bin/docker-compose >> ~/docker-script-install.log 2>&1
-        fi
+        echo "    3. You can find NGinX Proxy Manager files at ./docker/nginx-proxy-manager"
+        echo ""
+        echo "    Navigate to your server hostname / IP address on port 81 to setup"
+        echo "    NGinX Proxy Manager admin account."
+        echo ""
+        echo "    The default login credentials for NGinX Proxy Manager are:"
+        echo "        username: admin@example.com"
+        echo "        password: changeme"
 
         echo ""
-
-        echo "      - Docker Compose Version is now: " 
-        DOCKCOMPV=$(docker-compose --version)
-        echo "        "${DOCKCOMPV}
         echo ""
-        echo ""
+        echo "Provided to you by Mohammad Mohammadpour"
+        echo "https://github.com/shawshanck"       
         sleep 3s
+        cd
     fi
-
-    ##########################################
-    #### Test if Docker Service is Running ###
-    ##########################################
-    ISACT=$( (sudo systemctl is-active docker ) 2>&1 )
-    if [[ "$ISACt" != "active" ]]; then
-        echo "Giving the Docker service time to start..."
-        while [[ "$ISACT" != "active" ]] && [[ $X -le 10 ]]; do
-            sudo systemctl start docker >> ~/docker-script-install.log 2>&1
-            sleep 10s &
-            pid=$! # Process Id of the previous running command
-            spin='-\|/'
-            i=0
-            while kill -0 $pid 2>/dev/null
-            do
-                i=$(( (i+1) %4 ))
-                printf "\r${spin:$i:1}"
-                sleep .1
-            done
-            printf "\r"
-            ISACT=`sudo systemctl is-active docker`
-            let X=X+1
-            echo "$X"
-        done
-    fi
-
-    echo "################################################"
-    echo "######      Create a Docker Network    #########"
-    echo "################################################"
-
-    sudo docker network create my-main-net
-    sleep 2s
-
-    echo "Docker and Docker-Compose installed successfully."
-    echo ""
-    echo "If you add more docker applications to this server, make sure to add them to the my-main-app network."
-    echo ""
-    echo "Provided to you by Mohammad Mohammadpour"
-    echo "https://github.com/shawshanck"
-
+    
     exit 1
 }
 
