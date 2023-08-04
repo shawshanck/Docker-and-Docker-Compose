@@ -84,9 +84,9 @@ startInstall()
 
         
             curl -fsSL https://get.docker.com | sh >> ~/docker-script-install.log 2>&1
-            echo -e "${YELLOW}      - docker-ce version is now:${NC}"
+            echo -e "${YELLOW}         - Docker-Ce version is now:${NC}"
             DOCKERV=$(docker -v)
-            echo -e "${YELLOW}          ${NC}"${DOCKERV}
+            echo -e "${NC}          ${NC}"${DOCKERV}
             sleep 3s
 
             if [[ "$OS" == 2 ]]; then
@@ -306,7 +306,7 @@ startInstall()
 
         echo ""
 
-        echo -e "${GREEN}      - Docker Compose Version is now: ${NC}" 
+        echo -e "${YELLOW}      - Docker Compose Version is now: ${NC}" 
         DOCKCOMPV=$(docker-compose --version)
         echo "        "${DOCKCOMPV}
         echo ""
@@ -319,7 +319,7 @@ startInstall()
     ##########################################
     ISACT=$( (sudo systemctl is-active docker ) 2>&1 )
     if [[ "$ISACt" != "active" ]]; then
-        echo -e "${YELLOW}Giving the Docker service time to start...${NC}"
+        echo -e "${GRREN}Giving the Docker service time to start...${NC}"
         while [[ "$ISACT" != "active" ]] && [[ $X -le 10 ]]; do
             sudo systemctl start docker >> ~/docker-script-install.log 2>&1
             sleep 10s &
