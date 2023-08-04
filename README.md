@@ -16,6 +16,10 @@ With this script, you can automatically install Docker (Community Edition) and D
 
 "Open Suse"
 
+<h2>Installation:</h2>
+
+Just copy and paste the commands below and press enter!
+
 ```
 mkdir docker && cd docker
 wget https://raw.githubusercontent.com/shawshanck/Docker-and-Docker-Compose/main/install.sh
