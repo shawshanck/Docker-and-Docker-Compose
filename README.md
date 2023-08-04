@@ -1,7 +1,7 @@
 <h1 align="center">"Docker and Docker-Compose"</h1>
 
 <p align="center">
-<img src="https://cdn-images.imagevenue.com/07/b8/7a/ME16PV9N_o.png" width="100">
+<img src="https://cdn-images.imagevenue.com/e7/80/31/ME16PVAZ_o.png" width="100">
 <br>
 </p>
 
