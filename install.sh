@@ -13,14 +13,14 @@ installApps()
 {
     clear
     OS="$REPLY" ## <-- This $REPLY is about OS Selection
-    echo "${YELLOW}You can Install ${GREEN}Docker${NC} and ${GREEN}Docker-Compose${NC} with this script!${NC}"
-    echo "Please select ${GREEN}'y'${NC} for each item you would like to install."
-    echo "${RED}NOTE: Without Docker you cannot use Docker-Compose.${NC}"
-    echo ""
-    echo ""
-    echo "      ${CYAN}Provided to you by Mohammad Mohammadpour${NC}"
-    echo "          ${CYAN}https://github.com/shawshanck${NC}"
-    echo ""
+    echo -e "${YELLOW}You can Install ${GREEN}Docker${NC} and ${GREEN}Docker-Compose${NC} with this script!${NC}"
+    echo -e "Please select ${GREEN}'y'${NC} for each item you would like to install."
+    echo -e "${RED}NOTE: Without Docker you cannot use Docker-Compose.${NC}"
+    echo -e ""
+    echo -e ""
+    echo -e "      ${CYAN}Provided to you by Mohammad Mohammadpour${NC}"
+    echo -e "          ${CYAN}https://github.com/shawshanck${NC}"
+    echo -e ""
     
     ISACT=$( (sudo systemctl is-active docker ) 2>&1 )
     ISCOMP=$( (docker-compose -v ) 2>&1 )
@@ -29,17 +29,17 @@ installApps()
     if [[ "$ISACT" != "active" ]]; then
         read -rp "Docker-CE (y/n): " DOCK
     else
-        echo "${GREEN}Docker appears to be installed and running.${NC}"
-        echo ""
-        echo ""
+        echo -e "${GREEN}Docker appears to be installed and running.${NC}"
+        echo -e ""
+        echo -e ""
     fi
 
     if [[ "$ISCOMP" == *"command not found"* ]]; then
         read -rp "Docker-Compose (y/n): " DCOMP
     else
-        echo "${GREEN}Docker-compose appears to be installed.${NC}"
-        echo ""
-        echo ""
+        echo -e "${GREEN}Docker-compose appears to be installed.${NC}"
+        echo -e ""
+        echo -e ""
     fi
     
     startInstall
@@ -59,7 +59,7 @@ startInstall()
 #######################################################
 
     if [[ "$OS" == [234] ]]; then
-        echo "${BLUE}    1. Installing System Updates... this may take a while...be patient. If it is being done on a Digial Ocean VPS, you should run updates before running this script.${NC}"
+        echo -e "${BLUE}    1. Installing System Updates... this may take a while...be patient. If it is being done on a Digial Ocean VPS, you should run updates before running this script.${NC}"
         (sudo apt update && sudo apt upgrade -y) > ~/docker-script-install.log 2>&1 &
         ## Show a spinner for activity progress
         pid=$! # Process Id of the previous running command
@@ -73,20 +73,20 @@ startInstall()
         done
         printf "\r"
 
-        echo "${BLUE}    2. Install Prerequisite Packages...${NC}"
+        echo -e "${BLUE}    2. Install Prerequisite Packages...${NC}"
         sleep 2s
 
         sudo apt install curl wget git -y >> ~/docker-script-install.log 2>&1
         
         if [[ "$ISACT" != "active" ]]; then
-            echo "${GREEN}    3. Installing Docker-CE (Community Edition)...${NC}"
+            echo -e "${GREEN}    3. Installing Docker-CE (Community Edition)...${NC}"
             sleep 2s
 
         
             curl -fsSL https://get.docker.com | sh >> ~/docker-script-install.log 2>&1
-            echo "${GREEN}      - docker-ce version is now:${NC}"
+            echo -e "${GREEN}      - docker-ce version is now:${NC}"
             DOCKERV=$(docker -v)
-            echo "${YELLOW}          ${NC}"${DOCKERV}
+            echo -e "${YELLOW}          ${NC}"${DOCKERV}
             sleep 3s
 
             if [[ "$OS" == 2 ]]; then
@@ -361,17 +361,17 @@ echo ""
 
 clear
 
-echo "Let's figure out which OS / Distro you are running."
-echo ""
-echo ""
-echo "    From some basic information on your system, you appear to be running: "
-echo "        --  OS Name        " $(lsb_release -i)
-echo "        --  Description        " $(lsb_release -d)
-echo "        --  OS Version        " $(lsb_release -r)
-echo "        --  Code Name        " $(lsb_release -c)
-echo ""
-echo "------------------------------------------------"
-echo ""
+echo -e "${YELLOW}Let's figure out which OS / Distro you are running.${NC}"
+echo -e ""
+echo -e ""
+echo -e "${GREEN}    From some basic information on your system, you appear to be running: ${NC}"
+echo -e "        --  OS Name            " $(lsb_release -i)
+echo -e "        --  Description        " $(lsb_release -d)
+echo -e "        --  OS Version         " $(lsb_release -r)
+echo -e "        --  Code Name          " $(lsb_release -c)
+echo -e ""
+echo -e "------------------------------------------------"
+echo -e ""
 
 PS3="Please select the number for your OS / distro: "
 select _ in \
