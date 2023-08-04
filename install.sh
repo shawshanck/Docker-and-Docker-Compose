@@ -73,7 +73,7 @@ startInstall()
         done
         printf "\r"
 
-        echo -e "${BLUE}    2. Install Prerequisite Packages...${NC}"
+        echo -e "${BLUE}    2. Installing Prerequisite Packages...${NC}"
         sleep 2s
 
         sudo apt install curl wget git -y >> ~/docker-script-install.log 2>&1
