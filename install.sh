@@ -344,7 +344,8 @@ startInstall()
     echo "################################################"
 
     sudo docker network create my-main-net
-    sleep 2s
+    sleep 3s
+    cd
 
     echo -e "${GREEN}Docker and Docker-Compose installed successfully.${NC}"
     echo ""
@@ -353,7 +354,6 @@ startInstall()
     echo -e "      ${CYAN}Provided to you by ${YELLOW}Mohammad Mohammadpour${NC}"
     echo -e "          ${YELLOW}https://github.com/shawshanck${NC}"
 
-    cd
     exit 1
 }
 
