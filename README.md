@@ -2,7 +2,7 @@
 
 With this script, you can automatically install Docker (Community Edition) and Docker-Compose on your OS.
 
-Note: It automatically creates a network named "my-main-app" properties. For further containers installation, make sure to add the to this network.
+Note: It automatically creates a network named "my-main-app" properties. For further containers installation, make sure to add them to this network.
 
 <h2>Supported OS:</h2>
 
