@@ -1,16 +1,25 @@
 #!/bin/bash
 
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+CYAN='\033[0;36m'
+GRAY='\033[0;37m'
+NC='\033[0m' # No Color
+
 installApps()
 {
     clear
     OS="$REPLY" ## <-- This $REPLY is about OS Selection
-    echo "You can Install Docker and Docker-Compose with this script!"
-    echo "Please select 'y' for each item you would like to install."
-    echo "NOTE: Without Docker you cannot use Docker-Compose."
+    echo "${YELLOW}You can Install ${GREEN}Docker${NC} and ${GREEN}Docker-Compose${NC} with this script!${NC}"
+    echo "Please select ${GREEN}'y'${NC} for each item you would like to install."
+    echo "${RED}NOTE: Without Docker you cannot use Docker-Compose.${NC}"
     echo ""
     echo ""
-    echo "Provided to you by Mohammad Mohammadpour"
-    echo "https://github.com/shawshanck"
+    echo "      ${CYAN}Provided to you by Mohammad Mohammadpour${NC}"
+    echo "          ${CYAN}https://github.com/shawshanck${NC}"
     echo ""
     
     ISACT=$( (sudo systemctl is-active docker ) 2>&1 )
@@ -20,7 +29,7 @@ installApps()
     if [[ "$ISACT" != "active" ]]; then
         read -rp "Docker-CE (y/n): " DOCK
     else
-        echo "Docker appears to be installed and running."
+        echo "${GREEN}Docker appears to be installed and running.${NC}"
         echo ""
         echo ""
     fi
@@ -28,7 +37,7 @@ installApps()
     if [[ "$ISCOMP" == *"command not found"* ]]; then
         read -rp "Docker-Compose (y/n): " DCOMP
     else
-        echo "Docker-compose appears to be installed."
+        echo "${GREEN}Docker-compose appears to be installed.${NC}"
         echo ""
         echo ""
     fi
@@ -50,7 +59,7 @@ startInstall()
 #######################################################
 
     if [[ "$OS" == [234] ]]; then
-        echo "    1. Installing System Updates... this may take a while...be patient. If it is being done on a Digial Ocean VPS, you should run updates before running this script."
+        echo "${BLUE}    1. Installing System Updates... this may take a while...be patient. If it is being done on a Digial Ocean VPS, you should run updates before running this script.${NC}"
         (sudo apt update && sudo apt upgrade -y) > ~/docker-script-install.log 2>&1 &
         ## Show a spinner for activity progress
         pid=$! # Process Id of the previous running command
@@ -64,24 +73,24 @@ startInstall()
         done
         printf "\r"
 
-        echo "    2. Install Prerequisite Packages..."
+        echo "${BLUE}    2. Install Prerequisite Packages...${NC}"
         sleep 2s
 
         sudo apt install curl wget git -y >> ~/docker-script-install.log 2>&1
         
         if [[ "$ISACT" != "active" ]]; then
-            echo "    3. Installing Docker-CE (Community Edition)..."
+            echo "${GREEN}    3. Installing Docker-CE (Community Edition)...${NC}"
             sleep 2s
 
         
             curl -fsSL https://get.docker.com | sh >> ~/docker-script-install.log 2>&1
-            echo "      - docker-ce version is now:"
+            echo "${GREEN}      - docker-ce version is now:${NC}"
             DOCKERV=$(docker -v)
-            echo "          "${DOCKERV}
+            echo "${YELLOW}          ${NC}"${DOCKERV}
             sleep 3s
 
             if [[ "$OS" == 2 ]]; then
-                echo "    5. Starting Docker Service"
+                echo "${GREEN}    5. Starting Docker Service${NC}"
                 sudo systemctl docker start >> ~/docker-script-install.log 2>&1
             fi
         fi
