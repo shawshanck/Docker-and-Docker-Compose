@@ -29,7 +29,7 @@
 
 Just copy and paste the commands below and press enter!
 
-*First, install curl:
+First, install curl:
 
 ```
 apt install curl
