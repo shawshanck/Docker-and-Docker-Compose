@@ -29,12 +29,12 @@
 
 Just copy and paste the commands below and press enter!
 
+*First, install curl:
+
 ```
-mkdir docker && cd docker
-wget https://raw.githubusercontent.com/shawshanck/Docker-and-Docker-Compose/main/install.sh
-chmod +x install.sh
-./install.sh
+apt install curl
 ```
+Then use the command below:
 
 ```
 bash <(curl -Ls https://raw.githubusercontent.com/shawshanck/Docker-and-Docker-Compose/main/install.sh --ipv4)
