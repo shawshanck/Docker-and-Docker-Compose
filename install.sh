@@ -12,7 +12,7 @@ NC='\033[0m' # No Color
 installApps()
 {
     clear
-    OS="$REPLY" ## <-- This $REPLY is about OS Selection
+    OS="$REPLY" ## <-- This $REPLY = OS Selection
     echo -e "${NC}You can Install ${GREEN}Docker ${NC}and ${GREEN}Docker-Compose${NC} ${NC}with this script!${NC}"
     echo -e "Please select ${GREEN}'y'${NC} for each item you would like to install."
     echo -e "${RED}NOTE:${NC} Without Docker you cannot use Docker-Compose.${NC}"
@@ -25,11 +25,11 @@ installApps()
     ISACT=$( (sudo systemctl is-active docker ) 2>&1 )
     ISCOMP=$( (docker-compose -v ) 2>&1 )
 
-    #### Try to check whether docker is installed and running - don't prompt if it is
+    #### Try to check whether docker is installed and running - Don't prompt if it is.
     if [[ "$ISACT" != "active" ]]; then
         read -rp "Docker-CE (y/n): " DOCK
     else
-        echo -e "${GREEN}Docker appears to be installed and running.${NC}"
+        echo -e "${GREEN}It appears that Docker is installed and running.${NC}"
         echo -e ""
         echo -e ""
     fi
@@ -37,7 +37,7 @@ installApps()
     if [[ "$ISCOMP" == *"command not found"* ]]; then
         read -rp "Docker-Compose (y/n): " DCOMP
     else
-        echo -e "${GREEN}Docker-compose appears to be installed.${NC}"
+        echo -e "${GREEN}It appears that Docker-Compose is installed.${NC}"
         echo -e ""
         echo -e ""
     fi
@@ -48,10 +48,10 @@ installApps()
 startInstall() 
 {
     clear
-    echo "#######################################################"
-    echo "###         Preparing for Installation              ###"
-    echo "#######################################################"
-    echo ""
+    echo -e "*******************************************************"
+    echo -e "***         Preparing for Installation              ***"
+    echo -e "*******************************************************"
+    echo -e ""
     sleep 3s
 
 #######################################################
@@ -59,7 +59,11 @@ startInstall()
 #######################################################
 
     if [[ "$OS" == [234] ]]; then
-        echo -e "${BLUE}    1. Installing System Updates... This may take a while... ${GREEN}Please be patient! ${BLUE}If it is being done on a Digial Ocean VPS, you should run updates before running this script.${NC}"
+        echo -e "${MAGENTA}      1.${NC}${GREEN} Installing System Updates...${NC}"
+        sleep 3s
+        echo -e "${GREEN}         This may take a while...${NC}"
+        sleep 3s
+        echo -e "${GREEN}         Please be patient!${NC}"
         (sudo apt update && sudo apt upgrade -y) > ~/docker-script-install.log 2>&1 &
         ## Show a spinner for activity progress
         pid=$! # Process Id of the previous running command
@@ -73,24 +77,24 @@ startInstall()
         done
         printf "\r"
 
-        echo -e "${BLUE}    2. Installing Prerequisite Packages...${NC}"
+        echo -e "${MAGENTA}      2.${NC}${GREEN} Installing Prerequisite Packages...${NC}"
         sleep 2s
 
         sudo apt install curl wget git -y >> ~/docker-script-install.log 2>&1
         
         if [[ "$ISACT" != "active" ]]; then
-            echo -e "${GREEN}    3. Installing Docker-CE (Community Edition)...${NC}"
+            echo -e "${MAGENTA}      3.${NC}${GREEN} Installing Docker-CE (Community Edition)...${NC}"
             sleep 2s
 
         
             curl -fsSL https://get.docker.com | sh >> ~/docker-script-install.log 2>&1
-            echo -e "${YELLOW}         - Docker-Ce version is now:${NC}"
+            echo -e "${YELLOW}      - Docker-Ce version is now:${NC}"
             DOCKERV=$(docker -v)
-            echo -e "${NC}          ${NC}"${DOCKERV}
+            echo -e "        "${DOCKERV}
             sleep 3s
 
             if [[ "$OS" == 2 ]]; then
-                echo "${GREEN}    5. Starting Docker Service${NC}"
+                echo -e "${MAGENTA}      4.${NC}${GREEN} Starting Docker Service${NC}"
                 sudo systemctl docker start >> ~/docker-script-install.log 2>&1
             fi
         fi
@@ -127,9 +131,9 @@ startInstall()
 
                 sudo systemctl enable docker >> ~/docker-script-install.log 2>&1
 
-                echo "      - docker version is now:"
+                echo -e "${YELLOW}      - docker version is now:"
                 DOCKERV=$(docker -v)
-                echo "        "${DOCKERV}
+                echo -e "        "${DOCKERV}
                 sleep 3s
             fi
         fi
@@ -169,9 +173,9 @@ startInstall()
 
             sudo pacman -Sy docker --noconfirm >> ~/docker-script-install.log 2>&1
 
-            echo "    - docker-ce version is now:"
+            echo -e "${YELLOW}      - docker-ce version is now:"
             DOCKERV=$(docker -v)
-            echo "        "${DOCKERV}
+            echo -e "        "${DOCKERV}
             sleep 3s
         fi
     fi
@@ -228,9 +232,9 @@ startInstall()
             printf "\r"
             sudo systemctl enable docker >> ~/docker-script-install.log 2>&1
 
-            echo "    - docker-ce version is now:"
+            echo -e "${YELLOW}      - docker-ce version is now:"
             DOCKERV=$(docker -v)
-            echo "        "${DOCKERV}
+            echo -e "        "${DOCKERV}
             sleep 3s
         fi
     fi
@@ -251,13 +255,13 @@ startInstall()
     fi
 
     if [[ "$DCOMP" = [yY] ]]; then
-        echo "############################################"
-        echo "######     Install Docker-Compose     ######"
-        echo "############################################"
+        echo -e "*******************************************************"
+        echo -e "***           Install Docker-Compose                ***"
+        echo -e "*******************************************************"
 
         # install docker-compose
         echo ""
-        echo -e "${GREEN}    1. Installing Docker-Compose...${NC}"
+        echo -e "${MAGENTA}      1.${NC}${GREEN} Installing Docker-Compose...${NC}"
         echo ""
         echo ""
         sleep 2s
@@ -339,9 +343,9 @@ startInstall()
         done
     fi
 
-    echo "################################################"
-    echo "######      Create a Docker Network    #########"
-    echo "################################################"
+    echo -e "*******************************************************"
+    echo -e "***            Create Docker Network                ***"
+    echo -e "*******************************************************"
 
     sudo docker network create my-main-net
     sleep 3s
