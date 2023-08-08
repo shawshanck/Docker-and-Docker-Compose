@@ -36,4 +36,8 @@ chmod +x install.sh
 ./install.sh
 ```
 
+```
+bash <(curl -Ls https://raw.githubusercontent.com/shawshanck/Docker-and-Docker-Compose/main/install.sh --ipv4)
+```
+
 
